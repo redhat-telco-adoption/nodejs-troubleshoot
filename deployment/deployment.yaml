@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-troubleshoot
+  labels:
+    app: nodejs-troubleshoot
+    version: 1.0.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs-troubleshoot
+      version: 1.0.0
+  template:
+    metadata:
+      name: nodejs-troubleshoot
+      labels:
+        app: nodejs-troubleshoot
+        version: 1.0.0
+    spec:
+      containers:
+        - name: nodejs-troubleshoot
+          image: quay.io/jmayorgarh/nodejs-troubleshoot:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+      restartPolicy: Always
